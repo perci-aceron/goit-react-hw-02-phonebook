@@ -4,7 +4,7 @@ import ContactForm from './ContactForm';
 import ContactList from './ContactList';
 import Filter from './Filter';
 
-const PhonebookApp = () => {
+const App = () => {
   const [contacts, setContacts] = useState([]);
   const [filter, setFilter] = useState('');
 
@@ -21,6 +21,12 @@ const PhonebookApp = () => {
     setFilter(e.target.value);
   };
 
+  const handleDeleteContact = id => {
+    setContacts(prevContacts =>
+      prevContacts.filter(contact => contact.id !== id)
+    );
+  };
+
   const filteredContacts = contacts.filter(contact =>
     contact.name.toLowerCase().includes(filter.toLowerCase())
   );
@@ -30,11 +36,14 @@ const PhonebookApp = () => {
       <h1>Phonebook</h1>
       <ContactForm addContact={addContact} existingContacts={contacts} />
 
-      <h2>Contacts</h2>
+      <h2 className="contacts-heading">Contacts</h2>
       <Filter filter={filter} handleFilterChange={handleFilterChange} />
-      <ContactList contacts={filteredContacts} />
+      <ContactList
+        contacts={filteredContacts}
+        onDeleteContact={handleDeleteContact}
+      />
     </div>
   );
 };
 
-export default PhonebookApp;
+export default App;
